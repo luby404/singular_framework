@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='_css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='_css/remix/remixicon.css') }}">
+
+    {% for file in css_files %}
+       <link rel="stylesheet" href="{{ url_for('static', filename=file) }}">
+    {% endfor %}
+
+</head>
+
+<body onload="brython()">
+    
+    
+    <div id="root_app_singular">{{ content | safe }}</div>
+
+
+    <script src="{{ url_for('static', filename='_js/htmx.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='_js/brython.js') }}"></script>
+    <script src="{{ url_for('static', filename='_js/brython_stdlib.js') }}"></script>
+    <script src="{{ url_for('static', filename='_js/lib_python.py') }}" type="text/python"></script>
+
+    {% for file in js_files %}
+        <script src="{{ url_for('static', filename=file) }}"></script>
+    {% endfor %}
+
+</body>
+
+</html>
