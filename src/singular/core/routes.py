@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, send_from_directory
 from ..vars import BASE_PATH, APP_START_PATH
 
 from importlib import import_module
@@ -60,6 +60,8 @@ class Router():
                 bp.add_url_rule(route["route"], endpoint=str(uuid4()), view_func=route["view"], strict_slashes=False)
             
             app.register_blueprint(bp)
+        
+        app.add_url_rule("/assets/<path:filename>", view_func=self.assets)
             
             
     
@@ -74,4 +76,8 @@ class Router():
         if url == "": url = "/"
         return prefix, url
 
+    
+    def assets(self, filename):
+        base_app_name = os.path.join(APP_START_PATH, "assets")
+        return send_from_directory(base_app_name, filename)
 

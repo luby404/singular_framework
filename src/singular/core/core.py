@@ -1,7 +1,7 @@
 from flask import Flask
 import os
 
-from ..vars import BASE_PATH
+from ..vars import BASE_PATH, APP_START_PATH
 from .routes import Router
 
 class Singular(Flask):
@@ -12,7 +12,6 @@ class Singular(Flask):
         self.app_path = os.getcwd()
         self.routes = {}
         
-
         super().__init__(
             import_name=import_name, 
             static_folder=static_folder, 
@@ -20,6 +19,8 @@ class Singular(Flask):
         )    
         
         Router(self, pages_dir)
+        
+        
     
     
 

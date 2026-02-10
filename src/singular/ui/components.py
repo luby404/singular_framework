@@ -20,7 +20,7 @@ class BaseElement(Element):
 
 
 class View(BaseElement):
-    def __init__(self, *elements, style = Style(), className = "", id = "", attrs:dict = None):
+    def __init__(self, elements=[], style = Style(), className = "", id = "", attrs:dict = None):
         super().__init__(
             name="div",
             childs=list(elements),
