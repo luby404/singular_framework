@@ -13,17 +13,13 @@
 
 </head>
 
-<body onload="brython()">
+<body onload="">
     
     
     <div id="root_app_singular">{{ content | safe }}</div>
 
 
     <script src="{{ url_for('static', filename='_js/htmx.js') }}"></script>
-
-    <script src="{{ url_for('static', filename='_js/brython.js') }}"></script>
-    <script src="{{ url_for('static', filename='_js/brython_stdlib.js') }}"></script>
-    <script src="{{ url_for('static', filename='_js/lib_python.py') }}" type="text/python"></script>
 
     {% for file in js_files %}
         <script src="{{ url_for('assets', filename=file) }}"></script>

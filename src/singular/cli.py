@@ -27,80 +27,77 @@ def start(nome):
 
     # Estrutura
     assets = base / "assets"
-    controller = base / "controller"
-    views = base / "views"
-    index = views / "index"
-    models = base / "models"
+    pages  = base / "pages"
 
     # Criar pastas
-    for pasta in [base, assets, controller, views, index, models]:
+    for pasta in [base, assets, pages]:
         criar_pasta(pasta)
 
     # Criar page.py
-    page_file = index / "page.py"
+    page_file = pages / "page.py"
     if not page_file.exists():
-        page_file.write_text("""from singular import Component, View, Text, Button, Render, Style, Link
+        page_file.write_text("""from singular import *
 
-class Contador(Component):
-    def __init__(self):
-        super().__init__()
-        self.state = {"count": 0}
 
-    def increment(self, e):
-        self.state["count"] += 1
-        self.set_state(self.state)
 
-    def render(self):
-        return View(
-            View(
-                Text("Contador Simples Feito em Singular"),
-                Button(
-                    f"Contador: {self.state['count']}", 
-                    on_click=self.increment,
-                    style=Style(
-                        padding="10px",
-                        cursor="pointer",
-                        border_radius="10px",
-                        border="0",
-                        background_color="rgb(0, 255, 255)",
-                        font_weight="bold"
-                    )
-                ),
-                Link(
-                    "Sobre o Desenvolvedor",
-                    reload=True,
-                    href="https://ricardocayoca.onrender.com/",
-                    new_tab=True,
-                ),
-                Link(
-                    "Documentação",
-                    reload=True,
-                    href="https://pypi.org/project/singular-framework/",
-                    new_tab=True,
-                ),
-                style=Style(
-                    display="flex", 
-                    flex_direction="column",
-                    align_items="center",
-                    gap="10px",
-                    
-                )
-            ),
+class Button(Link):
+    def __init__(self, text, link, target=""):
+        super().__init__(
+            elements=[
+                Text(text, style=Style(font_size=".8rem"))
+            ],
             style=Style(
-                flex="1",
-                display="flex",
+                background_color="#000000",
+                padding="10px",
+                text_decoration="None",
+                border_radius="10px",
                 color="#FFF",
-                background_color="#111",
-                align_items="center",
-                justify_content="center",
-                flex_direction="column",
-                padding="20px",
-                
-                
-            )
+            ),
+            href=link,
+            target=target
+            
         )
 
-Render(Contador())
+@page()
+def index():
+    
+    return View(
+        elements=[
+            Text(
+                text="Singular FrameWork",
+                style=Style(
+                    font_weight="bold",
+                    font_size="2rem"
+                )
+            ),
+            Text("Singular é um framerwork full-stack simples para amantes da linguagem python"),
+            View(
+                elements=[
+                    Button(text="Documentação", link="doc"),
+                    Button(text="Portifolio do criador", link="https://ricardocayoca.onrender.com/", target="_blank")
+                ],
+                style=Style(
+                    display="flex",
+                    gap="20px",
+                    align_items="center"
+                )
+            )
+        ],
+        className="side_bar",
+        style=Style(
+            display="flex",
+            flex_direction="column",
+            gap="10px",
+            width="100%",
+            height="100%",
+            background_color="#333",
+            justify_content="center",
+            align_items="center",
+            color="#FFF"
+        )
+    )
+
+
 """)
         click.echo(f"[OK] Arquivo criado: {page_file}")
 
@@ -112,7 +109,7 @@ Render(Contador())
 from singular import Singular
 
 
-app = Singular(__name__, title="{nome}")
+app = Singular(__name__)
 """)
 
         click.echo(f"[OK] Arquivo criado: {init_file}")
@@ -125,7 +122,7 @@ def run(debug):
 
     import os
     import importlib.util
-    from .core import Singular
+    from .core.core import Singular
 
     click.echo("🔍 Procurando instância Singular no projeto...")
 

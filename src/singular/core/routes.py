@@ -16,7 +16,7 @@ class Router():
         self.routes = {}
         self.app:Flask = app
         
-        os.system("clear")
+        #os.system("clear")
         self.app_path = Path(APP_START_PATH)
         
         

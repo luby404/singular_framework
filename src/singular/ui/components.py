@@ -36,10 +36,14 @@ class Text(BaseElement):
 
 
 class Link(BaseElement):
-    def __init__(self, text:str="", href:str="", style = Style(), className = "", id = "", attrs = {}, elements:list[BaseElement]=[]):
+    def __init__(self, text:str="", href:str="", target="", style = Style(), className = "", id = "", attrs = {}, elements:list[BaseElement]=[]):
         super().__init__("a", text, elements, style, className, id, attrs)
-        try: self.attrs["href"] = href #url_for(href)
+        self.attrs = {}
+        try: 
+            self.attrs["href"] = href #url_for(href)
+            self.attrs["target"] = target
         except: self.attrs["href"] = href
+        
 
 
 class Button(BaseElement):
