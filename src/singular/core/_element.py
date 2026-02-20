@@ -5,7 +5,7 @@ class Element:
         self.name = name
         self.content = content
         self.childs = childs or []
-        self.style = style
+        self.style = style or {}
         self.attrs = attrs or {}
 
 
@@ -26,7 +26,7 @@ class Element:
     def _render_style(self):
         if not self.style:
             return ""
-        return ' style="' + ";".join(f"{k}:{v}" for k, v in self.style.items()) + ';"'
+        return "" #' style="' + ";".join(f"{k}:{v}" for k, v in self.style.items()) + ';"'
 
     def _render_attrs(self):
         if not self.attrs:
@@ -36,15 +36,21 @@ class Element:
     def render(self, indent: int = 0):
         """Renderiza o HTML final com indentação."""
         space = "  " * indent
-        html = f"{space}<{self.name}{self._render_style()}{self._render_attrs()}>"
+        html = f"{space}<{self.name} {self._render_style()} {self._render_attrs()}>"
 
         if self.content:
             html += self.content
+        
+        
 
         if self.childs:
             html += "\n"
             for child in self.childs:
-                html += child.render(indent + 1) + "\n"
+                try:
+                    html += child.render(indent + 1) + "\n"
+                except:
+                    print(type(child))
+                
             html += space
 
         html += f"</{self.name}>"

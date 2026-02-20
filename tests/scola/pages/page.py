@@ -6,9 +6,6 @@ from ui.style import leyout_base, content_style
 @page()
 def index(req):
     
-    
-    
-    
     return View(
         elements=[
             SideBar(

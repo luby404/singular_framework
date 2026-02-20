@@ -9,7 +9,14 @@ from functools import reduce
 
 class BaseElement(Element):
     def __init__(self, name = "div", content = "", childs: Optional[Any] = None, style:Style= Style(), className:str="", id:str="", attrs:dict = {}):
-        super().__init__(name, content, childs, style.style, attrs)
+        
+        self.name    = name
+        self.content = content
+        self.childs  = childs
+        self.style   = style.style
+        self.attrs   = attrs
+        
+        super().__init__(self.name, self.content, self.childs, self.style, self.attrs)
 
         # Adiciona class e id aos attrs, sobrescrevendo se já existirem
         self.attrs["class"] = className
@@ -44,7 +51,6 @@ class Link(BaseElement):
             self.attrs["target"] = target
         except: self.attrs["href"] = href
         
-
 
 class Button(BaseElement):
     def __init__(self, text:str="", element:list[BaseElement]=[], onclick:callable=None, type:Literal["submit", "reset"]="submit", childs=None, style = Style(), className = "", id = "", attrs = {}):
@@ -128,26 +134,88 @@ class ComboBox(BaseElement):
         self.attrs["required"] = "required" if required else None
 
 
-class Table(BaseElement):
-    def __init__(self, t_head:list=[], t_body:list=[], style = Style(display="flex"), className = "", id = "", attrs = {}):
+class Thead(BaseElement):
+    def __init__(self, elements:list[Element]=[]):
         super().__init__(
-            "table", "", 
-            [
-                BaseElement(name="th", childs=[
-                    BaseElement(name="tr", childs=[ BaseElement(name="td", content=el) for el in t_head ]),
-                ], style=Style(display="table-cell")),
-
-                BaseElement(name="tbody", childs=[
-                    BaseElement(name="tr", childs=[ BaseElement(name="td", content="wowo") for el in row ])
-                    for row in t_body
-                ], style=Style(display="table-cell")),
-
-            ], 
-            style, 
-            className, 
-            id, 
-            attrs
+            name="thead",
+            childs=[
+                BaseElement(
+                    name="tr", 
+                    childs=[
+                        BaseElement(
+                            name="td", childs=[element],
+                            style=Style(
+                                display="flex",
+                                padding="10px"
+                            )
+                        ) 
+                        for element in elements
+                    ],
+                    style=Style(
+                        display="flex",
+                        width="100%"
+                    )
+                )
+            ],
+            style=Style(
+                width="100%",
+                display="table-header-group"
+            )
         )
+
+class Tbody(BaseElement):
+    def __init__(self, elements:list[list[Element]]=[]):
+        super().__init__(
+            name="tbody",
+            childs=[
+                BaseElement(
+                    name="tr", 
+                    childs=[
+                        BaseElement(
+                            name="td", childs=[element],
+                            style=Style(
+                                display="flex",
+                                padding="10px"
+                            )
+                        ) 
+                        for element in _elements
+                    ],
+                    style=Style(
+                        display="flex",
+                        width="100%"
+                    )
+                ) for _elements in elements
+            ],
+            style=Style(
+                width="100%",
+                display="table-row-group"
+            )
+        )
+
+
+class Table(BaseElement):
+    def __init__(self, thead:list[Element]=[], tbody:list[list[Element]]=[]):
+        
+        
+        super().__init__(
+            name="table",
+            childs=[
+                Thead(elements=thead),
+                Tbody(elements=tbody)
+            ],
+            
+            style=self.style_table()
+            
+        )
+    
+    def style_table(self):
+        return Style(
+            display="table",
+            width="100%",
+            border="1px solid red"
+        )
+
+        
 
 class TableIten(BaseElement):
     ...

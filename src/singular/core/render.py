@@ -1,23 +1,29 @@
-from flask import render_template
+from flask import render_template, Request
 from functools import wraps
 
-def page(title:str=None, css_files:list=[], js_files:list=[]):
-    """ retorna uma pagina html """
+def page( title:str=None,  css_files:list=[],  js_files:list=[], milldeware=["auth"] ):
+
+    from flask import request
     
     def decorador(funcao:callable):
+        
         @wraps(funcao)   # <-- ESSENCIAL
+        
         def wrapper(*args, **kwargs):
+            
             return render_template(
                 "page.html",
-                content=funcao(*args, **kwargs), 
+                content=funcao(*args, **kwargs, req=request), 
                 title=title if title else funcao.__name__,
                 css_files=css_files,
                 js_files=js_files
             )
         wrapper.__is_page__ = True
+        
         return wrapper
     
     return decorador
+
 
 
 def component():
@@ -35,10 +41,17 @@ def component():
     
     return decorador
 
-
 def action():
     return ...
 
-
+def leyout():
+    def decorador(funcao:callable):
+        @wraps(funcao)   # <-- ESSENCIAL
+        def wrapper(*args, **kwargs):
+            return funcao(*args, **kwargs)
+        
+        wrapper.__is_leyout = True
+        return wrapper
+    return decorador
 
 

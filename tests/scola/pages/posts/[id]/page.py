@@ -6,7 +6,7 @@ def posts(req, id):
     return View(
         elements=[
             Text(f"detalhe do post {id}")
-        ]
+        ],
     )
 
 

@@ -32,7 +32,6 @@ def index():
                     font_size="2rem"
                 )
             ),
-            Text("Singular é um framerwork full-stack simples para amantes da linguagem python"),
             View(
                 elements=[
                     Button(text="Documentação", link="doc"),

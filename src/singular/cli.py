@@ -123,6 +123,7 @@ def run(debug):
     import os
     import importlib.util
     from .core.core import Singular
+    from .core.server import StandaloneAplication
 
     click.echo("🔍 Procurando instância Singular no projeto...")
 
@@ -166,6 +167,13 @@ def run(debug):
 
     # 4. executar run()
     click.echo("🚀 Iniciando servidor...\n")
+    options = {
+        "bind": "0.0.0.0:8500",
+        "workers": 5,
+        "--reload": True
+    }
+    
+    #StandaloneAplication(instancia, options=options).run()
     instancia.run(debug=debug)
 
 

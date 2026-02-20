@@ -15,8 +15,9 @@
 
 <body onload="">
     
-    
-    <div id="root_app_singular">{{ content | safe }}</div>
+    <div id="root_app_singular">
+        {{ content | safe }}
+    </div>
 
 
     <script src="{{ url_for('static', filename='_js/htmx.js') }}"></script>
