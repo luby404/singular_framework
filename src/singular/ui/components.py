@@ -47,7 +47,10 @@ class Link(BaseElement):
         super().__init__("a", text, elements, style, className, id, attrs)
         self.attrs = {}
         try: 
-            self.attrs["href"] = href #url_for(href)
+            self.attrs["hx-get"] = href #f"{href}?view_component_singular"
+            self.attrs["hx-target"] = "#root_singular"
+            self.attrs["hx-swap"] = "root_singular"
+            self.attrs["hx-push-url"] = "true"
             self.attrs["target"] = target
         except: self.attrs["href"] = href
         

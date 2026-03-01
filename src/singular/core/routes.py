@@ -58,7 +58,13 @@ class Router():
             bp = Blueprint(group, __name__, url_prefix="/" if group == "index" else f"/{group}")
             for route in routes:
                 #print(route)
-                bp.add_url_rule(route.route, endpoint=str(uuid4()), view_func=route.view, strict_slashes=False)
+                bp.add_url_rule(
+                    route.route, 
+                    endpoint=str(uuid4()), 
+                    view_func=route.view, 
+                    strict_slashes=False,
+                    methods=route.view.methods
+                )
                         
             app.register_blueprint(bp)
         

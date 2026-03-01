@@ -1,7 +1,10 @@
-from flask import render_template, Request
+from flask import render_template, Request, make_response
 from functools import wraps
 
-def page( title:str=None,  css_files:list=[],  js_files:list=[], milldeware=["auth"] ):
+
+from ..style import StyleSheet
+
+def page( title:str=None,  stylesheet:StyleSheet=None,methods=["GET"] ):
 
     from flask import request
     
@@ -11,19 +14,27 @@ def page( title:str=None,  css_files:list=[],  js_files:list=[], milldeware=["au
         
         def wrapper(*args, **kwargs):
             
+            path = request.path
+            _title = title if title else funcao.__name__
+            if request.headers.get("HX-Request", False):
+                resp = make_response(str(funcao(*args, **kwargs, req=request)))
+                resp.headers["X-Page-Title"] = _title
+                print(_title)
+                return resp
+            
             return render_template(
                 "page.html",
-                content=funcao(*args, **kwargs, req=request), 
-                title=title if title else funcao.__name__,
-                css_files=css_files,
-                js_files=js_files
+                content="", 
+                title=_title,
+                stylesheet=stylesheet,
+                path=path
             )
         wrapper.__is_page__ = True
+        wrapper.methods = methods
         
         return wrapper
     
     return decorador
-
 
 
 def component():

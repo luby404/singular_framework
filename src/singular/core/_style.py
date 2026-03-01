@@ -196,4 +196,4 @@ class Style:
     def __str__(self):
         # Gera uma string CSS no formato 'propriedade: valor; propriedade: valor;'
         return "; ".join([f"{k}: {v}" for k, v in self.style.items()])
-
+    

@@ -6,25 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='_css/style.css') }}">
-
-    {% for file in css_files %}
-       <link rel="stylesheet" href="{{ url_for('assets', filename=file) }}">
-    {% endfor %}
-
 </head>
 
-<body onload="">
+<body>
     
-    <div id="root_app_singular">
-        {{ content | safe }}
+    <div id="root_singular"
+    hx-get="{{ path }}" 
+    hx-trigger="load">
+
     </div>
 
+    <div class="overlay_">
+
+    </div>
 
     <script src="{{ url_for('static', filename='_js/htmx.js') }}"></script>
-
-    {% for file in js_files %}
-        <script src="{{ url_for('assets', filename=file) }}"></script>
-    {% endfor %}
+    <script src="{{ url_for('static', filename='_js/app.js') }}"></script>
 
 </body>
 

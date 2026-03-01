@@ -59,7 +59,7 @@ class Button(Link):
         )
 
 @page()
-def index():
+def index(req):
     
     return View(
         elements=[
