@@ -11,7 +11,7 @@ style = StyleSheet(
     )
 )
 
-@page(stylesheet=style)
+@page(stylesheet=style,)
 def index(req:Request):
     
     return View(

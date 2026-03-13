@@ -5,7 +5,7 @@ from ..vars import STYLE
 
 from ..style import StyleSheet
 
-def page( title:str=None,  stylesheet:StyleSheet=None,methods=["GET"] ):
+def page( title:str=None,  stylesheet:StyleSheet=None, methods=["GET"] ):
 
     from flask import request
     
