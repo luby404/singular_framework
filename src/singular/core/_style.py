@@ -10,7 +10,7 @@ class Style:
         self,
         
         # ---------------- DISPLAY & VISIBILITY ----------------
-        display: Literal["block", "inline", "inline-block", "flex", "grid", "none", "list-item", "table", "table-row", "table-cell"] = "block",
+        display: Literal["block", "inline", "inline-block", "flex", "grid", "none", "list-item", "table", "table-row", "table-cell"] = None,
         visibility: Literal["visible", "hidden", "collapse"] = None,
         overflow: Literal["visible", "hidden", "scroll", "auto"] = None,
         overflow_x: Literal["visible", "hidden", "scroll", "auto"] = None,
@@ -186,8 +186,8 @@ class Style:
     def to_inline(self) -> str:
         return "; ".join(f"{k}: {v}" for k, v in self.style.items())
 
-    def to_block(self, selector: str) -> str:
-        css = f"{selector} {{\n"
+    def to_block(self) -> str:
+        css = f"{{\n"
         for k, v in self.style.items():
             css += f"  {k}: {v};\n"
         css += "}"

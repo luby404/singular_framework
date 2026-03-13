@@ -36,12 +36,10 @@ class Element:
     def render(self, indent: int = 0):
         """Renderiza o HTML final com indentação."""
         space = "  " * indent
-        html = f"{space}<{self.name} {self._render_style()} {self._render_attrs()}>"
+        html = f"{space}<{self.name} {self._render_attrs()}>"
 
         if self.content:
             html += self.content
-        
-        
 
         if self.childs:
             html += "\n"
@@ -49,7 +47,7 @@ class Element:
                 try:
                     html += child.render(indent + 1) + "\n"
                 except:
-                    print(type(child))
+                    ...
                 
             html += space
 

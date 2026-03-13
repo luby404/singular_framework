@@ -1,12 +1,14 @@
 import os
 from pathlib import Path
-from flask import Flask, Blueprint, send_from_directory
-from ..vars import BASE_PATH, APP_START_PATH, Route
+from flask import Flask, Blueprint, send_from_directory, Response
+from ..vars import BASE_PATH, APP_START_PATH, Route, STYLE
 
 from importlib import import_module
 from importlib.util import spec_from_file_location, module_from_spec
 
 from uuid import uuid4
+
+from ..style import StyleSheet
 
 class Router():
     
@@ -73,6 +75,10 @@ class Router():
         # buscar pagina 404
         app.add_url_rule("/<path:path>", view_func=self.notFount )
         
+        # file css for page
+        app.add_url_rule("/style_page/<id>.css", view_func=self.style_page)
+
+        
         # add 404 page
         #(app.errorhandler(404))(lambda e: (self.notFount(e)))
           
@@ -101,3 +107,11 @@ class Router():
         
         return page
 
+    def style_page(self, id):
+        css = ""
+        
+        if id in STYLE:
+            obj:StyleSheet = STYLE[id]
+            for k, v in obj.style_sheet.items():
+                css += f".{k} {v}\n"
+        return Response(css, mimetype="text/css", content_type="text/css")

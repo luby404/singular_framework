@@ -49,9 +49,11 @@ class Link(BaseElement):
         try: 
             self.attrs["hx-get"] = href #f"{href}?view_component_singular"
             self.attrs["hx-target"] = "#root_singular"
-            self.attrs["hx-swap"] = "root_singular"
+            #self.attrs["hx-swap"] = "root_singular"
             self.attrs["hx-push-url"] = "true"
             self.attrs["target"] = target
+            self.attrs["href"] = ""
+            self.attrs["class"] = className
         except: self.attrs["href"] = href
         
 

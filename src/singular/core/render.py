@@ -1,6 +1,7 @@
-from flask import render_template, Request, make_response
+from flask import render_template, Request, make_response, url_for
 from functools import wraps
 
+from ..vars import STYLE
 
 from ..style import StyleSheet
 
@@ -14,12 +15,21 @@ def page( title:str=None,  stylesheet:StyleSheet=None,methods=["GET"] ):
         
         def wrapper(*args, **kwargs):
             
+            hash = str(funcao.__hash__())
+            css = ""
+            
+            if stylesheet:
+                css = stylesheet.style_sheet
+            
             path = request.path
             _title = title if title else funcao.__name__
+            
             if request.headers.get("HX-Request", False):
-                resp = make_response(str(funcao(*args, **kwargs, req=request)))
+                cpc = str(funcao(*args, **kwargs, req=request))
+                html = f"<style>{css}</style>{cpc}"
+                
+                resp = make_response(html)
                 resp.headers["X-Page-Title"] = _title
-                print(_title)
                 return resp
             
             return render_template(
@@ -27,7 +37,7 @@ def page( title:str=None,  stylesheet:StyleSheet=None,methods=["GET"] ):
                 content="", 
                 title=_title,
                 stylesheet=stylesheet,
-                path=path
+                path=path,
             )
         wrapper.__is_page__ = True
         wrapper.methods = methods
