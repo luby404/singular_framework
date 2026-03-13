@@ -23,13 +23,18 @@ O Singular foi criado para permitir que desenvolvedores construam aplicações w
 # 📁 Estrutura do Projeto
 
 ```
-singular/
-│
-├── core/           # Núcleo do framework
-├── ui/             # Componentes e recursos visuais
-├── cli.py          # Interface de linha de comando
-├── vars.py         # Variáveis globais
-└── __init__.py
+.
+├── app.py
+├── assets
+└── pages
+    ├── dashboard
+    │   └── page.py
+    ├── page.py
+    └── produtos
+        ├── [id]
+        │   └── page.py
+        └── page.py
+
 ```
 
 ---
@@ -38,7 +43,13 @@ singular/
 
 ## 1️⃣ Sistema de Rotas Baseado em Arquivos
 
-O Singular detecta automaticamente arquivos `page.py` dentro da pasta de páginas e registra rotas dinamicamente no Flask.
+O Singular detecta automaticamente arquivos `page.py` dentro da pasta `pages` e registra rotas dinamicamente no Flask.
+Para parametros dinamicos em url ex: /produto/1, basta colocar entre `[nome da pasta]` ou `<nome da pasta>` e o singular entende
+
+└── produtos
+        ├── [id]
+        │   └── page.py # aqui a pagina que sera exibida com um parametro
+        └── page.py
 
 Exemplo:
 
@@ -46,11 +57,13 @@ Exemplo:
 from singular import *
 
 @page()
-def index():
+def index(req, id):
     return View(
         elements=[...]
     )
 ```
+
+onde o id é o parametro da url e o req é a requisição que o flask passa a função
 
 O decorator `@page()` registra automaticamente a rota correspondente ao arquivo.
 
@@ -70,15 +83,17 @@ Parâmetros suportados:
 
 ```python
 @page(
-    css_files=["remix/remixicon.css"],
-    middleware=["auth"]
+    title:str=None,  
+    stylesheet:StyleSheet=None, 
+    middleware:Middleware=None, 
+    methods=["GET"] 
 )
 ```
 
 ### Permite:
 
-* Injeção de arquivos CSS
-* Registro de middlewares
+* Css programatico
+* Registro de middlewares **brevemente**
 * Configuração da página **brevemente**
 * Integração com layout base **brevemente**
 
@@ -176,13 +191,21 @@ A CLI é o ponto de entrada oficial do framework.
 O Singular suporta a ideia de middlewares declarativos:
 
 ```python
-@page(middleware=["auth"])
+class Auth(Middleware):
+    def after(self):
+        ....
+
+    def before(self):
+        ...
+
+
+@page(middleware=Auth)
 ```
 
-Isso permite executar funções antes da renderização da página.
+Isso permite executar funções antes e depois da renderização da página.
 
 Casos de uso:
-
+s
 * Autenticação
 * Permissões
 * Logging

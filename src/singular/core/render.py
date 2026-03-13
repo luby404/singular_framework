@@ -1,11 +1,12 @@
 from flask import render_template, Request, make_response, url_for
 from functools import wraps
+from ..middleware import Middleware
 
 from ..vars import STYLE
 
 from ..style import StyleSheet
 
-def page( title:str=None,  stylesheet:StyleSheet=None, methods=["GET"] ):
+def page(title:str=None,  stylesheet:StyleSheet=None, middleware:Middleware=None, methods=["GET"] ):
 
     from flask import request
     
